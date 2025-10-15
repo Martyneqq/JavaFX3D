@@ -1,4 +1,4 @@
-**Installation guide**
+# Installation guide
 1. Clone this repository
 2. Download JavaFX SDK library
 3. Export the library
