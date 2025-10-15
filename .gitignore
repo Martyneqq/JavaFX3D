@@ -1,0 +1,35 @@
+# IDE/Tooling specific files
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# NetBeans files
+nbproject/
+
+# Build and Compilation artifacts
+build/
+out/
+dist/
+
+# Compiled class files
+*.class
+
+# Package Files (e.g., JAR, WAR, EAR)
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+
+# Generated test/save data (based on your screenshot)
+*.dta
+*.save
+*.ser
+*.bin
+
+# Manifest and Build-related files
+manifest.mf
