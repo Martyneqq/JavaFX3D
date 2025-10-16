@@ -1,10 +1,10 @@
-package javafx3D;
+package javafx3D.utils;
 
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
-class ExtensionGroup extends Group {
+public class ExtensionGroup extends Group {
         Rotate r;
         Transform t = new Rotate();
         

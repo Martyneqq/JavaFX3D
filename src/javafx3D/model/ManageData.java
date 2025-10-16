@@ -1,8 +1,6 @@
-package javafx3D;
+package javafx3D.model;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,25 +9,27 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+// TODO This class is supposed to save and load data to/from file
+
 public class ManageData {
     public void saveData(){
         SaveData sData = new SaveData();
         ArrayList<Object> objData = new ArrayList<Object>();
         
         //objData.add(sData.colorCube);
-        objData.add(sData.cubeid);
-        objData.add(sData.width);
-        objData.add(sData.heightCube);
-        objData.add(sData.depth);
+        /*objData.add(sData.getCubeId());
+        objData.add(sData.getCubeWidth());
+        objData.add(sData.getCubeHeight());
+        objData.add(sData.getCubeDepth());
         
         //objData.add(sData.colorSphere);
-        objData.add(sData.sphereid);
-        objData.add(sData.radiusSphere);
+        objData.add(sData.getSphereId());
+        objData.add(sData.getSphereRadius());
         
         //objData.add(sData.colorCylinder);
-        objData.add(sData.cylinderid);
-        objData.add(sData.heightCylinder);
-        objData.add(sData.radiusCylinder);
+        objData.add(sData.getCylinderId());
+        objData.add(sData.getCylinderHeight());
+        objData.add(sData.getCylinderRadius());*/
     }
     
     public static void saveFile(Serializable data, String fileName) throws FileNotFoundException, IOException

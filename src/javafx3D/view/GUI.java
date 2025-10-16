@@ -1,40 +1,15 @@
-package javafx3D;
+package javafx3D.view;
 
-import com.sun.javafx.logging.PlatformLogger.Level;
-import java.awt.Canvas;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.logging.Logger;
-import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Point3D;
 import javafx.scene.Camera;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
@@ -46,31 +21,17 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.CullFace;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
+import javafx3D.model.ManageData;
+import javafx3D.components.*;
+import javafx3D.utils.*;
 
 /**
  *
@@ -80,9 +41,6 @@ public class GUI extends Application implements EventHandler<ActionEvent>
 {
     private static final float WIDTH = 1280;
     private static final float HEIGHT = 720;
-    private static int cubeID;
-    private static int sphereID;
-    private static int cylinderID;
     private static int numberOfObjects = 0;
     private String name;
     
@@ -108,50 +66,52 @@ public class GUI extends Application implements EventHandler<ActionEvent>
     private CustomBox cube;
     private CustomSphere sphere;
     private CustomCylinder cylinder;
-    private static ListView listView;
+    private static ListView<javafx.scene.shape.Shape3D> listView;
     private FileChooser fileChooser;
     private Pane pane;
     private ColorPicker colorPicker;
     private String cubeName;
     private ManageData mData;
-    
+
     private double anchorX, anchorY;
     private double anchorAngleX = 0;
     private double anchorAngleY = 0;
     private final DoubleProperty angleX = new SimpleDoubleProperty(0);
     private final DoubleProperty angleY = new SimpleDoubleProperty(0);
-    
-    
+
+    private javafx.scene.shape.Shape3D selectedShape = null;
+
+
     public static void main(String[] args) {
     launch(args);
     }      
     
     private void initMoveRotationScale(ExtensionGroup group, Scene scene, Stage stage) {
-        rotateButton.setOnAction(new EventHandler<ActionEvent>(){  
-            //Rotate
-            @Override
-            public void handle(ActionEvent t) {
-                    Rotate xRotate;
-                    Rotate yRotate;
-                    group.getTransforms().addAll(
-                       xRotate = new Rotate(WIDTH/2, Rotate.X_AXIS),
-                       yRotate = new Rotate(HEIGHT/2, Rotate.Y_AXIS)
-                    );
-                    xRotate.angleProperty().bind(angleX);
-                    yRotate.angleProperty().bind(angleY);
-
-                scene.setOnMousePressed(event1 -> {
-                    anchorX = event1.getSceneX();
-                    anchorY = event1.getSceneY();
-                    anchorAngleX = angleX.get();
-                    anchorAngleY = angleY.get();
-                });
-                scene.setOnMouseDragged(event2 -> {
-                angleX.set(anchorAngleX - (anchorY - event2.getSceneY()));
-                angleY.set(anchorAngleY + anchorX - event2.getSceneX());
-            });
-            }
-        });
+//        rotateButton.setOnAction(new EventHandler<ActionEvent>(){
+//            //Rotate
+//            @Override
+//            public void handle(ActionEvent t) {
+//                    Rotate xRotate;
+//                    Rotate yRotate;
+//                    group.getTransforms().addAll(
+//                       xRotate = new Rotate(WIDTH/2, Rotate.X_AXIS),
+//                       yRotate = new Rotate(HEIGHT/2, Rotate.Y_AXIS)
+//                    );
+//                    xRotate.angleProperty().bind(angleX);
+//                    yRotate.angleProperty().bind(angleY);
+//
+//                scene.setOnMousePressed(event1 -> {
+//                    anchorX = event1.getSceneX();
+//                    anchorY = event1.getSceneY();
+//                    anchorAngleX = angleX.get();
+//                    anchorAngleY = angleY.get();
+//                });
+//                scene.setOnMouseDragged(event2 -> {
+//                angleX.set(anchorAngleX - (anchorY - event2.getSceneY()));
+//                angleY.set(anchorAngleY + anchorX - event2.getSceneX());
+//            });
+//            }
+//        });
     
     stage.addEventHandler(ScrollEvent.SCROLL, event3 ->{
         double move = event3.getDeltaY();
@@ -201,7 +161,7 @@ public class GUI extends Application implements EventHandler<ActionEvent>
         moveButton.setTranslateY(HEIGHT/2 - 35);
         moveButton.setOnAction(this);
     }
-    
+
     private void RotateButton(){
         rotateButton = new ToggleButton();
         Image image4 = new Image(getClass().getResourceAsStream("/images/rotate3D.png"));
@@ -209,7 +169,38 @@ public class GUI extends Application implements EventHandler<ActionEvent>
         rotateButton.setGraphic(imageView4);
         rotateButton.setTranslateX(20);
         rotateButton.setTranslateY(HEIGHT/2);
-        rotateButton.setOnAction(this);
+
+        rotateButton.setOnAction(t -> {
+            if (rotateButton.isSelected()) {
+                Scene scene = rotateButton.getScene();
+
+                scene.setOnMousePressed(event1 -> {
+                    anchorX = event1.getSceneX();
+                    anchorY = event1.getSceneY();
+                });
+
+                scene.setOnMouseDragged(event2 -> {
+                    if (selectedShape != null) {
+                        double dx = anchorX - event2.getSceneX();
+                        double dy = anchorY - event2.getSceneY();
+
+                        selectedShape.setRotationAxis(Rotate.Y_AXIS);
+                        selectedShape.setRotate(selectedShape.getRotate() - dx * 0.5);
+
+                        selectedShape.setRotationAxis(Rotate.X_AXIS);
+                        selectedShape.setRotate(selectedShape.getRotate() - dy * 0.5);
+
+                        anchorX = event2.getSceneX();
+                        anchorY = event2.getSceneY();
+                    }
+                });
+
+            } else {
+                Scene scene = rotateButton.getScene();
+                scene.setOnMousePressed(null);
+                scene.setOnMouseDragged(null);
+            }
+        });
     }
     
     private void ScaleButton() {
@@ -244,17 +235,42 @@ public class GUI extends Application implements EventHandler<ActionEvent>
         listView.setTranslateY(25);
         listView.setPrefWidth(150);
         listView.setPrefHeight(498);
-        
+
+        listView.setCellFactory(lv -> new javafx.scene.control.ListCell<javafx.scene.shape.Shape3D>() {
+            @Override
+            protected void updateItem(javafx.scene.shape.Shape3D item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    // Check the object's type and use its getID() method for the name
+                    if (item instanceof CustomBox tempBox) {
+                        setText("Cube " + tempBox.getID());
+                    } else if (item instanceof CustomSphere tempSphere) {
+                        setText("Sphere " + tempSphere.getID());
+                    } else if (item instanceof CustomCylinder tempCylinder) {
+                        setText("Cylinder " + tempCylinder.getID());
+                    } else {
+                        setText(item.getClass().getSimpleName()); // Fallback name
+                    }
+                }
+            }
+        });
+
         listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                /*if (listView.getSelectionModel().getSelectedItem() == myObject) {
-                    myObject = selectionTexture();
-                }*/
+                selectedShape = listView.getSelectionModel().getSelectedItem();
 
-                System.out.println("clicked on " + listView.getSelectionModel().getSelectedItem());
+                if (selectedShape != null) {
+                    System.out.println("Selected Object: " + selectedShape.getClass().getSimpleName() + " " + selectedShape.getId());
+
+                    // Optionally: Highlight the selected object here
+                    // e.g., selectedShape.setEffect(new Lighting());
+                }
             }
-    });
+        });
     }
     
     private void textureWindow(){
@@ -366,48 +382,48 @@ public class GUI extends Application implements EventHandler<ActionEvent>
     @Override
     public void handle(ActionEvent event){
         if (event.getSource()==cubeButton) {
-            cube = new CustomBox(Color.LIGHTGREY, cubeID);
+            cube = new CustomBox(Color.LIGHTGREY);
 
             extension.translateXProperty().set(WIDTH/2);
             extension.translateYProperty().set(HEIGHT/2);
             
             extension.getChildren().add(cube);
-            cubeID++;
-            cube.setID(sphereID);
+
+            cube.setID(cube.getID());
             String cubeName = "Cube " + Integer.toString(cube.getID());
+            listView.getItems().add(cube);
+
             numberOfObjects++;
-            listView.getItems().add(cubeName);
-            
             System.out.println("Objects: " + numberOfObjects);
         }
         else if (event.getSource()==sphereButton) {
-            sphere = new CustomSphere(Color.LIGHTGREY, sphereID);
+            sphere = new CustomSphere(Color.LIGHTGREY);
 
             extension.translateXProperty().set(WIDTH/2);
             extension.translateYProperty().set(HEIGHT/2);
-            
+
             extension.getChildren().add(sphere);
-            sphereID++;
-            sphere.setID(sphereID);
-            String sphereName = "Sphere " + Integer.toString(sphere.getID());
+
+            sphere.setID(sphere.getID());
+            String cubeName = "Cube " + Integer.toString(sphere.getID());
+            listView.getItems().add(sphere);
+
             numberOfObjects++;
-            listView.getItems().add(sphereName);
-            
             System.out.println("Objects: " + numberOfObjects);
         }
         else if (event.getSource()==cylinderButton) {
-            cylinder = new CustomCylinder(Color.LIGHTGREY, cylinderID);
-            
+            cylinder = new CustomCylinder(Color.LIGHTGREY);
+
             extension.translateXProperty().set(WIDTH/2);
             extension.translateYProperty().set(HEIGHT/2);
-            
+
             extension.getChildren().add(cylinder);
-            cylinderID++;
-            cylinder.setID(cylinderID);
-            String cylinderName = "Cylinder " + Integer.toString(cylinder.getID());
+
+            cylinder.setID(cylinder.getID());
+            String cubeName = "Cube " + Integer.toString(cylinder.getID());
+            listView.getItems().add(cylinder);
+
             numberOfObjects++;
-            listView.getItems().add(cylinderName);
-            
             System.out.println("Objects: " + numberOfObjects);
         }
         /*if (event.getSource()==moveButton) {
