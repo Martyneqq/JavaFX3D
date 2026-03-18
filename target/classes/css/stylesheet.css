@@ -1,0 +1,42 @@
+.root { 
+    -fx-focus-color: transparent; 
+}
+
+.list-view .list-cell{
+    -fx-background-color: #FFFFFF;
+}
+
+.list-view {
+    -fx-background-color: #FFFFFF, -fx-control-inner-background;
+    -fx-background-insets: 0, 0;
+    -fx-padding: 0;
+}
+
+.list-cell {
+    -fx-text-fill: black;
+    -fx-font-size: 12.0;
+}
+
+.list-view .list-cell:filled:selected:focused,  .list-cell:filled:selected {
+    -fx-background-color: #8a8a8a;
+}
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+    -fx-background-color: #8a8a8a;
+}
+
+.button{
+    -fx-focus-color: transparent;
+}
+
+.toggle-button{
+    -fx-focus-color: transparent;
+}
+
+.button:focused {
+    -fx-focus-color: transparent; 
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+.toggle-button:focused {
+    -fx-focus-color: transparent; 
+    -fx-background-insets: -1.4, 0, 1, 2;
+}

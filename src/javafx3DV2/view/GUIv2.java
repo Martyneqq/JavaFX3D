@@ -32,7 +32,7 @@ import java.util.Optional;
  * Refaktorovaná GUI třída s lepší architekturou a modulárností.
  * Používá dependency injection a odděluje concerns.
  */
-public class GUI extends Application {
+public class GUIv2 extends Application {
     
     // Services
     private Scene3DManager scene3DManager;
