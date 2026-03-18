@@ -113,14 +113,19 @@ public class GUIv2 extends Application {
         camera = new PerspectiveCamera(true);
         camera.setTranslateZ(AppConfig.INITIAL_Z_POSITION);
         
-        // Vytvoř scénu
-        mainScene = new Scene(root, AppConfig.WINDOW_WIDTH, AppConfig.WINDOW_HEIGHT);
-        mainScene.setFill(Color.web(AppConfig.SCENE_BACKGROUND_COLOR));
-        mainScene.setCamera(camera);
-        mainScene.getStylesheets().add(getClass().getResource(AppConfig.STYLESHEET_PATH).toExternalForm());
+        // Nastavit root do Scene s kamerou
+        Scene rootScene = new Scene(root, AppConfig.WINDOW_WIDTH, AppConfig.WINDOW_HEIGHT);
+        rootScene.setFill(Color.web(AppConfig.SCENE_BACKGROUND_COLOR));
+        rootScene.setCamera(camera);
+        rootScene.getStylesheets().add(getClass().getResource(AppConfig.STYLESHEET_PATH).toExternalForm());
         
-        // Vytvoř layout
-        layout = new BorderPane(root);
+        // Vytvoř main layout BorderPane - toto bude primární
+        layout = new BorderPane();
+        layout.setCenter(rootScene.getRoot());
+        
+        // Vytvoř finální scénu s BorderPane jako root
+        mainScene = new Scene(layout, AppConfig.WINDOW_WIDTH, AppConfig.WINDOW_HEIGHT);
+        mainScene.getStylesheets().add(getClass().getResource(AppConfig.STYLESHEET_PATH).toExternalForm());
         
         Logger.debug("UI inicializováno");
     }
@@ -139,7 +144,9 @@ public class GUIv2 extends Application {
         Menu helpMenu = createHelpMenu();
         
         menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu);
-        mainScene.getRoot(); // No need to add, we'll use BorderPane later
+        
+        // Přidej menu do top
+        layout.setTop(menuBar);
     }
     
     /**
@@ -211,6 +218,7 @@ public class GUIv2 extends Application {
         
         // Vytvoř list view pro objekty
         listView = new ListView<>();
+        listView.setPrefWidth(150);
         listView.setCellFactory(param -> new ListCell<String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -225,7 +233,14 @@ public class GUIv2 extends Application {
             }
         });
         
-        // Přidej do layouut když bude BorderPane
+        // Vytvoř right panel s toolbarem a listview
+        VBox rightPanel = new VBox(10);
+        rightPanel.setStyle("-fx-padding: 10;");
+        rightPanel.getChildren().addAll(toolbar, new Separator(), listView);
+        
+        // Přidej do layout
+        layout.setLeft(toolbar);
+        layout.setRight(rightPanel);
     }
     
     /**
