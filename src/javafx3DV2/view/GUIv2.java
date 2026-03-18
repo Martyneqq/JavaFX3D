@@ -1,4 +1,4 @@
-package javafx3D.view;
+package javafx3DV2.view;
 
 import javafx.application.Application;
 import javafx.application.Platform;

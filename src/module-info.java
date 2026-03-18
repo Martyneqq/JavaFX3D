@@ -15,7 +15,8 @@ module JavaFX3D {
     exports javafx3D.handler;
 
     opens javafx3D.view;
-    opens javafx3DV2.view;
+    opens javafx3DV2.view to javafx.fxml, com.google.gson;
+    exports javafx3DV2.view;
 
     opens javafx3D.controller to javafx.fxml;
 
