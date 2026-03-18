@@ -253,10 +253,6 @@ Logger.error("Chyba", exception);
 - Zkontroluj `/images` folder v src
 - Obrázky by měly být: cube3D.png, sphere3D.png, cylinder3D.png, etc.
 
-### "Camera không zobrazit nic"
-- Zkontroluj camera.setTranslateZ() v AppConfig
-- Zkontroluj czy extension group je přidán do root
-
 ## Autoři a Licence
 
 Autor: cepel
