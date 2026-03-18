@@ -389,7 +389,6 @@ public class GUI extends Application implements EventHandler<ActionEvent>
             
             extension.getChildren().add(cube);
 
-            cube.setID(cube.getID());
             String cubeName = "Cube " + Integer.toString(cube.getID());
             listView.getItems().add(cube);
 
@@ -404,7 +403,6 @@ public class GUI extends Application implements EventHandler<ActionEvent>
 
             extension.getChildren().add(sphere);
 
-            sphere.setID(sphere.getID());
             String cubeName = "Cube " + Integer.toString(sphere.getID());
             listView.getItems().add(sphere);
 
@@ -419,7 +417,6 @@ public class GUI extends Application implements EventHandler<ActionEvent>
 
             extension.getChildren().add(cylinder);
 
-            cylinder.setID(cylinder.getID());
             String cubeName = "Cube " + Integer.toString(cylinder.getID());
             listView.getItems().add(cylinder);
 
