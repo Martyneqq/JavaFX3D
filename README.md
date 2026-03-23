@@ -163,7 +163,7 @@ java --module-path /path/to/javafx-sdk/lib \
 - **File → Open**: Načte dříve uloženou scénu
 - **Edit → Clear Scene**: Vymaže všechny objekty
 
-## Nové Klíčové Třídy
+## Klíčové Třídy
 
 ### Scene3DManager
 Spravuje všechny 3D objekty v scéně:
